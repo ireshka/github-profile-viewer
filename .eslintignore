@@ -1,0 +1,5 @@
+*.config.js
+*.setup.js
+src/.storybook/*.js
+.eslintrc.js
+src/reportWebVitals.js
