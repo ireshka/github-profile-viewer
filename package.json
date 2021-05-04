@@ -1,6 +1,21 @@
 {
   "name": "github-profile-viewer",
   "version": "0.1.0",
+  "description": "Simple React app for viewing Github user profile info",
+  "keywords": [
+    "github-api",
+    "typescript",
+    "styled-components",
+    "react"
+  ],
+  "repository": "https://github.com/ireshka/github-profile-viewer.git",
+  "bugs": "https://github.com/ireshka/github-profile-viewer/issues",
+  "author": {
+    "name": "Małgorzata Olborska",
+    "email": "reshcode@gmail.com",
+    "url": "https://github.com/ireshka"
+  },
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",
@@ -30,13 +45,9 @@
     "precommit": "lint-staged",
     "prettier": "prettier --write .",
     "start": "react-scripts start",
-    "test": "react-scripts test"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "test": "react-scripts test",
+    "deploy": "npm run build && npm run deploy:netlify",
+    "deploy:netlify": "netlify deploy"
   },
   "browserslist": {
     "production": [
