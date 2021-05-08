@@ -1,6 +1,8 @@
 import React, { useState, VFC } from 'react';
 
+import { validateUsername } from './Form.helpers';
 import * as S from './Form.styles';
+import { Input } from './Input';
 
 interface IForm {
   onSubmit: (username: string) => void;
@@ -14,8 +16,14 @@ export const Form: VFC<IForm> = ({ onSubmit }) => {
     if (!inputValue) {
       return;
     }
-    onSubmit(inputValue);
-    setInputValue('');
+    const isValidUsername = validateUsername(inputValue);
+    if (isValidUsername) {
+      onSubmit(inputValue);
+      setInputValue('');
+    } else {
+      // set error state
+      console.log('Invalid username');
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,17 +38,9 @@ export const Form: VFC<IForm> = ({ onSubmit }) => {
   };
 
   return (
-    <S.StyledForm action="" onSubmit={handleSubmit}>
+    <S.StyledForm action="" onSubmit={handleSubmit} spellCheck="false">
       <S.StyledInputWrapper>
-        <S.StyledInput
-          type="text"
-          placeholder="Github username"
-          name="githubname"
-          value={inputValue}
-          onChange={handleChange}
-          autoComplete="off"
-          required
-        />
+        <Input onChange={handleChange} value={inputValue} />
         <S.StyledButton type="submit">Add profile</S.StyledButton>
       </S.StyledInputWrapper>
     </S.StyledForm>
