@@ -8,6 +8,10 @@ const myDefaultTheme: DefaultTheme = {
     white: '#ffffff',
     dark: '#2B1D43',
     lightGradient: 'linear-gradient(45deg, #7a34ec26, #7a34ec05, transparent)',
+    error: {
+      light: '#EA1E63',
+      dark: '#8b113e',
+    },
   },
   border: {
     small: '10px',
@@ -15,6 +19,12 @@ const myDefaultTheme: DefaultTheme = {
   spacing: {
     small: '0.5rem',
     medium: '1rem',
+  },
+  font: {
+    size: {
+      small: '0.875rem',
+      medium: '1rem',
+    },
   },
 };
 

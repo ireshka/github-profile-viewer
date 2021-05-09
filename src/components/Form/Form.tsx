@@ -1,14 +1,16 @@
 import React, { useState, VFC } from 'react';
 
+import { ErrorMessages } from '../../constants/errorMessages';
 import { validateUsername } from './Form.helpers';
 import * as S from './Form.styles';
 import { Input } from './Input';
 
 interface IForm {
   onSubmit: (username: string) => void;
+  onError: (errorMessage: ErrorMessages | null) => void;
 }
 
-export const Form: VFC<IForm> = ({ onSubmit }) => {
+export const Form: VFC<IForm> = ({ onSubmit, onError }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleSubmit = (event: React.SyntheticEvent) => {
@@ -23,11 +25,13 @@ export const Form: VFC<IForm> = ({ onSubmit }) => {
     } else {
       // set error state
       console.log('Invalid username');
+      onError(ErrorMessages.invalidUsername);
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
+    onError(null);
     const { value } = event.currentTarget;
     const trimmedValue = value.trim();
     if (trimmedValue.length > 0) {
@@ -38,7 +42,7 @@ export const Form: VFC<IForm> = ({ onSubmit }) => {
   };
 
   return (
-    <S.StyledForm action="" onSubmit={handleSubmit} spellCheck="false">
+    <S.StyledForm onSubmit={handleSubmit} spellCheck="false">
       <S.StyledInputWrapper>
         <Input onChange={handleChange} value={inputValue} />
         <S.StyledButton type="submit">Add profile</S.StyledButton>

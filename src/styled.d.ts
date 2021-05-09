@@ -9,6 +9,10 @@ declare module 'styled-components' {
       white: string;
       dark: string;
       lightGradient: string;
+      error: {
+        light: string;
+        dark: string;
+      };
     };
     border: {
       small: string;
@@ -16,6 +20,12 @@ declare module 'styled-components' {
     spacing: {
       small: string;
       medium: string;
+    };
+    font: {
+      size: {
+        small: string;
+        medium: string;
+      };
     };
   }
 }
