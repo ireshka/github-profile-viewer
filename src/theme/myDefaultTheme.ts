@@ -22,7 +22,7 @@ const myDefaultTheme: DefaultTheme = {
   },
   font: {
     size: {
-      small: '0.875rem',
+      small: '0.8rem',
       medium: '1rem',
     },
   },

@@ -23,8 +23,6 @@ export const Form: VFC<IForm> = ({ onSubmit, onError }) => {
       onSubmit(inputValue);
       setInputValue('');
     } else {
-      // set error state
-      console.log('Invalid username');
       onError(ErrorMessages.invalidUsername);
     }
   };
