@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import { checkUser, getInitialUserData, getUserData } from './App.helpers';
+import * as S from './App.styles';
 import { CardList } from './components/CardList/CardList';
 import { ErrorBox } from './components/ErrorBox/ErrorBox';
 import { Form } from './components/Form/Form';
@@ -26,17 +27,18 @@ export const App: FC = () => {
   }, []);
 
   const addNewUser = async (username: string) => {
+    const isUserAdded = checkUser(users, username);
+    if (isUserAdded) {
+      setError(ErrorMessages.userAlreadyExists);
+      return;
+    }
     const newFullUserData = await api.getUser(username);
     const userData = getUserData(newFullUserData);
     if (!userData) {
-      console.error('User not found');
+      setError(ErrorMessages.userNotFound);
       return;
     }
-    const isUserAdded = checkUser(users, userData);
-    if (isUserAdded) {
-      console.error('User already added');
-      return;
-    }
+
     setUsers((previousState) => [...previousState, userData]);
   };
 
@@ -49,8 +51,10 @@ export const App: FC = () => {
       <GlobalStyle />
       <Layout>
         <Header />
-        <Form onSubmit={addNewUser} onError={handleError} />
-        {error && <ErrorBox text={error} />}
+        <S.FormWrapper>
+          <Form onSubmit={addNewUser} onError={handleError} />
+          {error && <ErrorBox text={error} />}
+        </S.FormWrapper>
         <CardList users={users} />
       </Layout>
     </ThemeProvider>

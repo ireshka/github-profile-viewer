@@ -2,8 +2,8 @@ import { initialData, IUser, UserType } from './data/initialData';
 import { api } from './services/api/github';
 import { IFullUser } from './services/api/github.types';
 
-export const checkUser = (users: IUser[], checkedUser: IUser): boolean => {
-  const foundUser = users.find((user) => user.name === checkedUser.name);
+export const checkUser = (users: IUser[], username: string): boolean => {
+  const foundUser = users.find((user) => user.login.toLowerCase() === username.toLowerCase());
   if (foundUser) {
     return true;
   }

@@ -28,6 +28,7 @@ export const StyledTextWrapper = styled('div')`
   border-top-right-radius: ${({ theme }) => theme.border.small};
   color: ${({ theme }) => theme.colors.white};
   display: flex;
+  flex: 1;
   font-size: ${({ theme }) => theme.font.size.small};
   justify-content: flex-start;
   padding: 0.875rem;

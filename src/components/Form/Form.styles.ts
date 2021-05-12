@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 
 export const StyledForm = styled('form')`
-  padding: 10px;
+  padding: 0.75rem 0;
 `;
 
 export const StyledInputWrapper = styled('div')`
   align-items: stretch;
   display: flex;
   height: 3rem;
-  justify-content: center;
 `;
 
 export const StyledInput = styled('input')`
@@ -17,6 +16,7 @@ export const StyledInput = styled('input')`
   border-right: none;
   border-top-left-radius: ${({ theme }) => theme.border.small};
   color: ${({ theme }) => theme.colors.main};
+  flex: 1;
   font-size: 1rem;
   font-style: normal;
   padding: ${({ theme }) => theme.spacing.medium};
