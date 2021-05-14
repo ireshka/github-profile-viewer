@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
-import { checkUser, getInitialUserData, getUserData } from './App.helpers';
+import { checkUser, getInitialUserData, getRequestError, getUserData, isUser } from './App.helpers';
 import * as S from './App.styles';
 import { CardList } from './components/CardList/CardList';
 import { ErrorBox } from './components/ErrorBox/ErrorBox';
@@ -33,13 +33,18 @@ export const App: FC = () => {
       return;
     }
     const newFullUserData = await api.getUser(username);
-    const userData = getUserData(newFullUserData);
-    if (!userData) {
-      setError(ErrorMessages.userNotFound);
+
+    const requestError = getRequestError(newFullUserData);
+
+    if (requestError) {
+      setError(requestError);
       return;
     }
 
-    setUsers((previousState) => [...previousState, userData]);
+    if (isUser(newFullUserData)) {
+      const userData = getUserData(newFullUserData);
+      setUsers((previousState) => [...previousState, userData]);
+    }
   };
 
   const handleError = (errorMessage: ErrorMessages | null): void => {

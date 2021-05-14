@@ -1,3 +1,5 @@
+import { ErrorMessages } from '../../constants/errorMessages';
+
 export interface IFullUser {
   login: string;
   id: number;
@@ -32,3 +34,11 @@ export interface IFullUser {
   created_at: Date;
   updated_at: Date;
 }
+
+export type IGithubRequestError = {
+  status: number | null;
+  githubMessage: string | null;
+  message: ErrorMessages | null;
+};
+
+export type GetUserResponse = IFullUser | IGithubRequestError;

@@ -1,6 +1,7 @@
-import { initialData, IUser, UserType } from './data/initialData';
+import { ErrorMessages } from './constants/errorMessages';
+import { initialData, IUser } from './data/initialData';
 import { api } from './services/api/github';
-import { IFullUser } from './services/api/github.types';
+import { GetUserResponse, IFullUser } from './services/api/github.types';
 
 export const checkUser = (users: IUser[], username: string): boolean => {
   const foundUser = users.find((user) => user.login.toLowerCase() === username.toLowerCase());
@@ -10,34 +11,56 @@ export const checkUser = (users: IUser[], username: string): boolean => {
   return false;
 };
 
-export const getUserData = (fullUserData: IFullUser | null): UserType => {
-  let selectedUserData;
-  if (fullUserData !== null) {
-    const { name, login, avatar_url: avatarUrl, company, html_url: profileLink } = fullUserData;
-    selectedUserData = {
-      name,
-      login,
-      avatarUrl,
-      company,
-      profileLink,
-    };
-  } else {
-    selectedUserData = null;
-  }
+export const getUserData = (fullUserData: IFullUser): IUser => {
+  const { name, login, avatar_url: avatarUrl, company, html_url: profileLink } = fullUserData;
+  const selectedUserData = {
+    name,
+    login,
+    avatarUrl,
+    company,
+    profileLink,
+  };
   return selectedUserData;
 };
 
-function isNotNull<T>(argument: T | null): argument is T {
-  return argument !== null;
-}
+export const isUser = (data: GetUserResponse): data is IFullUser => {
+  if ('login' in data) {
+    return true;
+  }
+  return false;
+};
 
 export const getInitialUserData = async (): Promise<IUser[]> => {
   const initialGithubLogins = initialData;
-  const initialFullUserData = await Promise.all(
-    initialGithubLogins.map(({ login }) => api.getUser(login)),
-  );
-  const initialUserData = initialFullUserData.map((fullUser) => getUserData(fullUser));
+  const data = await Promise.all(initialGithubLogins.map(({ login }) => api.getUser(login)));
   // eslint-disable-next-line unicorn/no-array-callback-reference
-  const existedInitialUserData = initialUserData.filter(isNotNull);
-  return existedInitialUserData;
+  const fullUserData = data.filter(isUser);
+  const initialUserData = fullUserData.map((user) => getUserData(user));
+  return initialUserData;
+};
+
+export const getRequestError = (data: GetUserResponse): ErrorMessages | null => {
+  let errorMessage;
+  if ('status' in data) {
+    const { status } = data;
+
+    if (status) {
+      switch (status) {
+        case 403:
+          errorMessage = ErrorMessages.tooManyRequest;
+          break;
+        case 404:
+          errorMessage = ErrorMessages.userNotFound;
+          break;
+        default:
+          errorMessage = ErrorMessages.unknownError;
+      }
+    } else {
+      const { message } = data;
+      errorMessage = message || ErrorMessages.unknownError;
+    }
+  } else {
+    errorMessage = null;
+  }
+  return errorMessage;
 };
