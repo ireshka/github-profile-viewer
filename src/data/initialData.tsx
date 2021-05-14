@@ -6,8 +6,6 @@ export interface IUser {
   profileLink: string;
 }
 
-export type UserType = IUser | null;
-
 export interface IGithubLogin {
   login: string;
 }
